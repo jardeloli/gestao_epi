@@ -58,8 +58,11 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.id).HasName("PRIMARY");
 
-            entity.Property(e => e.estado).HasMaxLength(50);
             entity.Property(e => e.nome).HasMaxLength(100);
+            entity.Property(c => c.ca).HasColumnType("int");
+            entity.Property(t => t.tamanho).HasMaxLength(10);
+            entity.Property(v => v.validade).HasColumnType("date");
+            entity.Property(d=> d.descricao).HasMaxLength(500);
         });
 
         modelBuilder.Entity<Estoque>(entity =>
