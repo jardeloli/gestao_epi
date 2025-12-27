@@ -69,7 +69,6 @@ namespace Gestão_Epi.Controllers
             }
 
             var usuario = await _bancoGE.usuario
-                .Include(u => u.perfil)
                 .FirstOrDefaultAsync(u => u.email == request.Email);
 
 
