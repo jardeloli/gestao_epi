@@ -18,6 +18,17 @@ namespace Gestão_Epi.Controllers
         {
             _bancoGE = bancoGE;
         }
+        [HttpGet("listar-colaboradores")]
+        public async Task<IActionResult> Listar_Colaboradores()
+        {
+            var colaboradores = await _bancoGE.colaborador.ToListAsync();
+
+            if (colaboradores == null || colaboradores.Count == 0)
+            {
+                return NotFound("Nenhum colaborador encontrado.");
+            }
+            return Ok(colaboradores);
+        }
 
         [HttpPost("cadastrar-colaborador")]
         public async Task<IActionResult> Cadastrar_Colaborador([FromBody]ColaboradorRequest request)
