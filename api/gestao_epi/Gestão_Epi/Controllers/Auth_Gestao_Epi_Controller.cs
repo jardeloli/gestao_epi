@@ -97,7 +97,7 @@ namespace Gestão_Epi.Controllers
 
         }
 
-        [Authorize(Roles = "1")]
+        [Authorize]
         [HttpPatch("atualizar-senha")]
         public async Task<IActionResult> AtualizarSenha([FromBody] Nova_SenhaRequest request)
         {

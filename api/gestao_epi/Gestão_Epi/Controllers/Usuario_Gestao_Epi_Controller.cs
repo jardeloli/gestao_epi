@@ -1,6 +1,7 @@
 ﻿using Gestão_Epi.Data;
 using Gestão_Epi.Entities;
 using Gestão_Epi.Models.Cadastrar_Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -57,6 +58,7 @@ namespace Gestão_Epi.Controllers
             return Ok(response);
         }
 
+        [Authorize(Roles = "1")]
         [HttpDelete("deletar-usuario/{id}")]
         public async Task<IActionResult> DeletarUsuario(int id)
         {
@@ -70,6 +72,7 @@ namespace Gestão_Epi.Controllers
 
             _bancoGE.usuario.Remove(usuario);
             await _bancoGE.SaveChangesAsync();
+
             return Ok("Usuário deletado com sucesso!");
         }
     }
