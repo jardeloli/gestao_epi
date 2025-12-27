@@ -101,8 +101,10 @@ namespace Gestão_Epi.Controllers
         [HttpPatch("atualizar-senha")]
         public async Task<IActionResult> AtualizarSenha([FromBody] Nova_SenhaRequest request)
         {
+            int usuarioId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value!);
+
             var usuario = await _bancoGE.usuario.
-                FirstOrDefaultAsync(u => u.email == request.EmailUsuario);
+                FindAsync(usuarioId);
 
 
             if (request.NovaSenha != request.ConfirmarNovaSenha)
