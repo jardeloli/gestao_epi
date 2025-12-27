@@ -1,0 +1,6 @@
+@Gestão_Epi_HostAddress = http://localhost:5207
+
+GET {{Gestão_Epi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
