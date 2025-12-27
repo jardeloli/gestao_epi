@@ -43,5 +43,21 @@ namespace Gestão_Epi.Controllers
 
             return Ok("Colaborador " + colaborador_novo.nome + " cadastrado com sucesso.");
         }
+
+        [HttpDelete("deletar-colaborador/{id}")]
+        public async Task<IActionResult> Deletar_Colaborador(int id)
+        {
+            var colaborador = await _bancoGE.colaborador.FindAsync(id);
+
+            if (colaborador == null)
+            {
+                return NotFound("Colaborador não encontrado.");
+            }
+
+            _bancoGE.colaborador.Remove(colaborador);
+            await _bancoGE.SaveChangesAsync();
+
+            return Ok($"Colaborador {colaborador.nome} foi deletado com sucesso!");
+        }
     }
 }
