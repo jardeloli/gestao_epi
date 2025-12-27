@@ -63,6 +63,11 @@ namespace Gestão_Epi.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> LoginUsuario([FromBody] LoginRequest request)
         {
+            if (string.IsNullOrWhiteSpace(request.Senha))
+            {
+                return Unauthorized("Email ou senha inválidos.");
+            }
+
             var usuario = await _bancoGE.usuario
                 .Include(u => u.perfil)
                 .FirstOrDefaultAsync(u => u.email == request.Email);
@@ -72,10 +77,7 @@ namespace Gestão_Epi.Controllers
             {
                 return Unauthorized("Email ou senha inválidos.");
             }
-            if (string.IsNullOrWhiteSpace(request.Senha))
-            {
-                return Unauthorized("Email ou senha inválidos.");
-            }
+           
 
             var token = GerarToken(usuario);
 
