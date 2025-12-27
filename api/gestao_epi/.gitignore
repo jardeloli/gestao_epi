@@ -362,10 +362,11 @@ MigrationBackup/
 # Fody - auto-generated XML schema
 FodyWeavers.xsd
 
+
 # configs sensíveis
 appsettings.json
-appsettings.*.json
-Gestão_Epi/appsettings.json
+appsettings.Development.json
+
 
 # .NET
 bin/
