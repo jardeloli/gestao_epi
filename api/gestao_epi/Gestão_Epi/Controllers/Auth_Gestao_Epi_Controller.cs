@@ -64,6 +64,7 @@ namespace Gestão_Epi.Controllers
         public async Task<IActionResult> LoginUsuario([FromBody] LoginRequest request)
         {
             var usuario = await _bancoGE.usuario
+                .Include(u => u.perfil)
                 .FirstOrDefaultAsync(u => u.email == request.Email);
 
 
