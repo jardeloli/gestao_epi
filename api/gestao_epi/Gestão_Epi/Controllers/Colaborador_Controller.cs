@@ -52,7 +52,7 @@ namespace Gestão_Epi.Controllers
             _bancoGE.colaborador.Add(colaborador_novo);
             await _bancoGE.SaveChangesAsync();
 
-            return Ok("Colaborador " + colaborador_novo.nome + " cadastrado com sucesso.");
+            return Ok($"Colaborador { colaborador_novo.nome} cadastrado com sucesso!");
         }
 
         [HttpDelete("deletar-colaborador/{id}")]
