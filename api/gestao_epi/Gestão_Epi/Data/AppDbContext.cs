@@ -62,7 +62,7 @@ public partial class AppDbContext : DbContext
             entity.Property(c => c.ca).HasColumnType("int");
             entity.Property(t => t.tamanho).HasMaxLength(10);
             entity.Property(v => v.validade).HasColumnType("date");
-            entity.Property(d=> d.descricao).HasMaxLength(500);
+            entity.Property(d => d.descricao).HasMaxLength(1000);
         });
 
         modelBuilder.Entity<Estoque>(entity =>

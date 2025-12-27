@@ -8,7 +8,7 @@
         public string tamanho { get; set; }
         public DateOnly? validade { get; set; }
 
-        public string descricao { get; set; }
+        public string descricao { get; set; } 
 
     }
 }
