@@ -1,6 +1,10 @@
 ﻿using Gestão_Epi.Data;
+using Gestão_Epi.Entities;
+using Gestão_Epi.Models;
+using Gestão_Epi.Models.Pessoa_Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Gestão_Epi.Controllers
 {
@@ -15,6 +19,29 @@ namespace Gestão_Epi.Controllers
             _bancoGE = bancoGE;
         }
 
-        
+        [HttpPost("cadastrar-colaborador")]
+        public async Task<IActionResult> Cadastrar_Colaborador([FromBody]ColaboradorRequest request)
+        {
+            var matricula_padronizada = request.matricula.Trim().ToLower();
+
+            var colaborador_existente = await _bancoGE.colaborador.FirstOrDefaultAsync(c => c.matricula.ToLower() == matricula_padronizada);
+
+            if (colaborador_existente != null)
+            {
+                return Conflict("Colaborador já cadastrado.");
+            }
+            
+            var colaborador_novo = new Colaborador
+            {
+                nome = request.nome,
+                setor = request.setor,
+                matricula = request.matricula
+            };
+
+            _bancoGE.colaborador.Add(colaborador_novo);
+            await _bancoGE.SaveChangesAsync();
+
+            return Ok("Colaborador " + colaborador_novo.nome + " cadastrado com sucesso.");
+        }
     }
 }

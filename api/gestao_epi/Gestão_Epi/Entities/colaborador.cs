@@ -11,6 +11,8 @@ public partial class Colaborador
 
     public string? setor { get; set; }
 
+    public string? matricula { get; set; }
+
     public virtual ICollection<Notificacao> notificacao { get; set; } = new List<Notificacao>();
 
     public virtual ICollection<Retirada_devolucao> retirada_devolucao { get; set; } = new List<Retirada_devolucao>();

@@ -1,8 +1,9 @@
-﻿namespace Gestão_Epi.Models
+﻿namespace Gestão_Epi.Models.Pessoa_Model
 {
-    public class ColaboradorRequest: PessoaRequest
+    public class ColaboradorRequest : PessoaRequest
     {
+        
         public string ? setor { get; set; }
-        public int matricula { get; set; }
+        public string matricula { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 {
     public class PessoaRequest
     {
-        public int id { get; set; }
-        public string? nome { get; set; }
+        
+        public string nome { get; set; }
     }
 }
