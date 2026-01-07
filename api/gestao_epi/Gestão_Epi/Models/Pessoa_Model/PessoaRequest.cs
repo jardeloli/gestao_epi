@@ -4,5 +4,7 @@
     {
         
         public string nome { get; set; }
+
+        public string novo_nome { get; set; }
     }
 }

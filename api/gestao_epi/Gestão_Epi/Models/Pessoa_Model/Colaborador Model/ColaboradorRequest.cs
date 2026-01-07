@@ -5,5 +5,9 @@
         
         public string ? setor { get; set; }
         public string matricula { get; set; }
+
+        public string ? novo_setor { get; set; }
+
+        public string
     }
 }

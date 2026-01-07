@@ -5,6 +5,7 @@ using Gestão_Epi.Models.Pessoa_Model;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Org.BouncyCastle.Crypto.Digests;
 
 namespace Gestão_Epi.Controllers
 {
@@ -53,6 +54,26 @@ namespace Gestão_Epi.Controllers
             await _bancoGE.SaveChangesAsync();
 
             return Ok($"Colaborador { colaborador_novo.nome} cadastrado com sucesso!");
+        }
+
+        [HttpPut("atualizar-colaborador")]
+        public async Task<IActionResult> Atualizar_Colaborador([FromBody]ColaboradorRequest request)
+        {
+            var colaborador = await _bancoGE.colaborador.FirstOrDefaultAsync(c => c.nome == request.nome);
+            if (colaborador == null)
+            {
+                return NotFound("Colaborador não encontrado.");
+            }
+
+            else
+            {
+                colaborador.nome = request.novo_nome;
+                colaborador.setor = request.novo_setor;
+                colaborador.matricula = request.matricula;
+            }
+
+            await _bancoGE.SaveChangesAsync();
+            return Ok($"Colaborador {colaborador.nome} atualizado com sucesso!");
         }
 
         [HttpDelete("deletar-colaborador/{id}")]
