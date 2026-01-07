@@ -1,6 +1,6 @@
 ﻿namespace Gestão_Epi.Models
 {
-    public class PessoaResponse
+    public class VisitanteResponse
     {
     }
 }

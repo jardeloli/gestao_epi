@@ -1,6 +1,9 @@
-﻿namespace Gestão_Epi.Models
+﻿using Gestão_Epi.Models.Pessoa_Model;
+
+namespace Gestão_Epi.Models
 {
-    public class PessoaRequest
+    public class VisitanteRequest : PessoaRequest
     {
+        public string documento { get; set; }
     }
 }
