@@ -8,6 +8,6 @@
 
         public string ? novo_setor { get; set; }
 
-        public string
+        public string ? nova_matricula { get; set; }
     }
 }

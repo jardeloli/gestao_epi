@@ -69,7 +69,7 @@ namespace Gestão_Epi.Controllers
             {
                 colaborador.nome = request.novo_nome;
                 colaborador.setor = request.novo_setor;
-                colaborador.matricula = request.matricula;
+                colaborador.matricula = request.nova_matricula;
             }
 
             await _bancoGE.SaveChangesAsync();
