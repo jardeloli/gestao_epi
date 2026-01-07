@@ -1,6 +1,7 @@
 ﻿using Gestão_Epi.Data;
 using Gestão_Epi.Entities;
 using Gestão_Epi.Models.Cadastrar_Model;
+using Gestão_Epi.Models.Usuario_Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -18,6 +19,19 @@ namespace Gestão_Epi.Controllers
         public Usuario_Gestao_Epi_Controller(AppDbContext bancoGE)
         {
             _bancoGE = bancoGE;
+        }
+
+        [HttpGet("listar-usuarios")]
+        public async Task<IActionResult> Listar_Usario()
+        {
+            var usuarios = await _bancoGE.usuario.ToListAsync();
+
+            if (usuarios == null || usuarios.Count == 0)
+            {
+                return NotFound("Nenhum usuário encontrado.");
+            }
+
+            return Ok(usuarios);
         }
 
         [HttpPost("cadastrar-usuario")]
@@ -56,6 +70,25 @@ namespace Gestão_Epi.Controllers
                 PerfilId = usuario.perfil_id
             };
             return Ok(response);
+        }
+
+        [HttpPut("atualizar-usuario")]
+        public async Task<IActionResult> Atualizar_Usuario([FromBody] UsuarioRequest request)
+        {
+            var usuario = await _bancoGE.usuario.FirstOrDefaultAsync(u => u.id == request.id);
+            if (usuario == null)
+            {
+                return NotFound("Usuário não encontrado.");
+            }
+
+            else
+            {
+                usuario.nome = request.nome;
+            }
+
+            await _bancoGE.SaveChangesAsync();
+
+            return Ok($"Usuário {usuario.nome} atualizado com sucesso!");
         }
 
         [Authorize(Roles = "1")]
