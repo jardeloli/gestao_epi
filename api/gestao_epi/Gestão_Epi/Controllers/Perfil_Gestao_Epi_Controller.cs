@@ -18,6 +18,18 @@ namespace Gestão_Epi.Controllers
             _bancoGE = bancoGE;
         }
 
+        [HttpGet("listar-perfis")]
+        public async Task<IActionResult> Listar_Perfis()
+        {
+            var perfils = await _bancoGE.perfil.ToListAsync();
+
+            if (perfils == null || perfils.Count == 0)
+            {
+                return NotFound("Nenhum perfil cadastrado.");
+            }
+
+            return Ok(perfils);
+        }
         [HttpPost("cadastrar-perfil")]
         public async Task<IActionResult> CadastrarPerfil([FromBody] PerfilRequest request)
         {
