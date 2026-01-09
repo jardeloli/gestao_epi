@@ -22,9 +22,17 @@ public partial class Visitante
         Definir_cpf(documento);
     }
 
+    public void Atualizar_Dados(string nome, string documento)
+    {
+        this.nome = nome;
+        Definir_cpf(documento);
+    }
     private void Definir_cpf(string documento)
     {
-        
+       
         this.documento = documento;
     }
+
+
+    
 }

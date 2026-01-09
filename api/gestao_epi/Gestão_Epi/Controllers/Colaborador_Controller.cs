@@ -67,7 +67,7 @@ namespace Gestão_Epi.Controllers
 
             else
             {
-                colaborador.nome = request.novo_nome;
+                colaborador.nome = request.nome;
                 colaborador.setor = request.novo_setor;
                 colaborador.matricula = request.nova_matricula;
             }

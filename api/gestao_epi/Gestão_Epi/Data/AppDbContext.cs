@@ -205,8 +205,17 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.id).HasName("PRIMARY");
 
-            entity.Property(e => e.documento).HasMaxLength(11);
-            entity.Property(e => e.nome).HasMaxLength(100);
+            entity.Property<string>("nome")
+              .HasColumnName("nome")
+              .HasMaxLength(100)
+              .IsRequired();
+
+            entity.Property<string>("documento")
+              .HasColumnName("documento")
+              .HasMaxLength(11)
+              .IsRequired();
+
+            
         });
 
         OnModelCreatingPartial(modelBuilder);

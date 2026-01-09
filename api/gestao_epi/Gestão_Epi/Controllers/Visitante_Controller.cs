@@ -38,7 +38,13 @@ namespace Gestão_Epi.Controllers
             {
                 return BadRequest("Documento inválido.");
             }
-                
+            
+            if(string.IsNullOrWhiteSpace(request.nome))
+            {
+                return BadRequest("Nome do visitante é obrigatório.");
+            }
+
+            
             var visitante_existente = await _bancoGE.visitante.FirstOrDefaultAsync(v => v.documento == request.documento);
 
             
@@ -59,6 +65,30 @@ namespace Gestão_Epi.Controllers
             await _bancoGE.SaveChangesAsync();
 
             return Ok($"Visitante {visitante_novo.nome} cadastrado com sucesso!");
+        }
+
+        [HttpPut("atualizar-visitante/{id}")]
+        public async Task<IActionResult> Atualizar_Visitante( int id, [FromBody] VisitanteRequest request)
+        {
+            var visitante = await _bancoGE.visitante.FirstOrDefaultAsync(v => v.id == id);
+
+            if(visitante == null)
+            {
+                return NotFound("Visitante não encontrado.");
+            }
+
+            if (string.IsNullOrWhiteSpace(request.nome))
+            {
+
+              return BadRequest("Nome do visitante é obrigatório.");
+            };
+
+            visitante.Atualizar_Dados(request.nome, request.documento);
+
+            await _bancoGE.SaveChangesAsync();
+
+            return Ok($"Visitante {visitante.nome} atualizado com sucesso!");
+
         }
     }
 }
