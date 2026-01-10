@@ -17,6 +17,12 @@ namespace Gestão_Epi.Controllers
         {
             _bancoGE = bancoGE;
         }
+        [HttpGet("listar-epis")]
+        public async Task<IActionResult> Listar_Epis()
+        {
+            var epis = await _bancoGE.epi.ToListAsync();
+            return Ok(epis);
+        }
 
         [HttpPost("cadastrar-epi")]
         public async Task<IActionResult> Cadastrar_Epi([FromBody]EpiRequest request) 
@@ -27,6 +33,13 @@ namespace Gestão_Epi.Controllers
             {
                 return Conflict("EPI já cadastrado.");
             };
+
+            if(string.IsNullOrEmpty(request.nome) || !Epi.ChecarTamanhoCa(request.ca) || 
+                string.IsNullOrEmpty(request.tamanho) || string.IsNullOrEmpty(request.descricao) || 
+                request.validade == default(DateOnly))
+            {
+                return BadRequest("Dados inválidos. Verifique os campos obrigatórios.");
+            }
 
             var epi_novo = new Epi
             {

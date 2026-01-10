@@ -22,4 +22,12 @@ public partial class Epi
     public virtual Estoque? estoque { get; set; }
 
     public virtual ICollection<Retirada_devolucao> retirada_devolucao { get; set; } = new List<Retirada_devolucao>();
+
+    public static bool ChecarTamanhoCa(int ca)
+    {
+      
+        return ca.ToString().Length >= 5;
+    }
+
+  
 }
