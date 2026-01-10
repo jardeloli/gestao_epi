@@ -39,9 +39,9 @@ namespace Gestão_Epi.Controllers
                 return BadRequest("Documento inválido.");
             }
             
-            if(string.IsNullOrWhiteSpace(request.nome))
+            if(string.IsNullOrWhiteSpace(request.nome) || string.IsNullOrWhiteSpace(request.documento))
             {
-                return BadRequest("Nome do visitante é obrigatório.");
+                return BadRequest("Campos obrigatório o preenchimento.");
             }
 
             
@@ -77,10 +77,10 @@ namespace Gestão_Epi.Controllers
                 return NotFound("Visitante não encontrado.");
             }
 
-            if (string.IsNullOrWhiteSpace(request.nome))
+            if (string.IsNullOrWhiteSpace(request.nome) || string.IsNullOrWhiteSpace(request.documento))
             {
 
-              return BadRequest("Nome do visitante é obrigatório.");
+                return BadRequest("Campos obrigatório o preenchimento");
             };
 
             visitante.Atualizar_Dados(request.nome, request.documento);
@@ -89,6 +89,23 @@ namespace Gestão_Epi.Controllers
 
             return Ok($"Visitante {visitante.nome} atualizado com sucesso!");
 
+        }
+
+        [HttpDelete("deletar-visitante/{id}")]
+        public async Task<IActionResult> Deletar_Visitante(int id)
+        {
+            var visitante = await _bancoGE.visitante.FirstOrDefaultAsync(v => v.id == id);
+
+            if (visitante == null)
+            {
+                return NotFound("Visitante não encontrado.");
+            }
+
+            _bancoGE.visitante.Remove(visitante);
+
+            await _bancoGE.SaveChangesAsync();
+
+            return Ok($"Visitante {visitante.nome} deletado com sucesso!");
         }
     }
 }
