@@ -57,5 +57,22 @@ namespace Gestão_Epi.Controllers
 
 
         }
+
+        [HttpDelete("deletar-epi/{id}")]
+        public async Task<IActionResult> Deletar_Epi(int id)
+        {
+            var epi = await _bancoGE.epi.FindAsync(id);
+
+            if(epi == null)
+            {
+                return NotFound("EPI não encontrado.");
+            }
+
+            _bancoGE.epi.Remove(epi);
+
+            await _bancoGE.SaveChangesAsync();
+
+            return Ok("EPI deletado com sucesso.");
+        }
     }
 }
