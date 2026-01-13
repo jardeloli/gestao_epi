@@ -50,7 +50,14 @@ namespace Gestão_Epi.Controllers
                 descricao = request.descricao
             };
 
+            var estoque_novo = new Estoque
+            {
+                epi = epi_novo,
+                quantidade = 0
+            };
+
             _bancoGE.epi.Add(epi_novo);
+            _bancoGE.estoque.Add(estoque_novo);
             await _bancoGE.SaveChangesAsync();
 
             return Ok("EPI cadastrado com sucesso.");

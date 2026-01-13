@@ -1,10 +1,13 @@
 using Gestão_Epi.Data;
+using Gestão_Epi.Interface;
+using Gestão_Epi.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
 using System.Security.Claims;
 using System.Text;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -69,6 +72,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     )
 );
 
+builder.Services.AddScoped<IEstoqueService, EstoqueService>();
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 
 Console.WriteLine("JWT KEY (Program.cs): " + jwtSettings["Key"]);

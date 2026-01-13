@@ -1,8 +1,9 @@
-﻿namespace Gestão_Epi.Interfaces
+﻿namespace Gestão_Epi.Interface
 {
-    public interface Estoque_Interface
+    public interface IEstoqueService
     {
-        Task EntradaAsync(int epiId, int quantidade);
-        Task SaidaAsync(int epiId, int quantidade);
+        Task EntradaAsync(int id, int quantidade);
+        Task SaidaAsync(int id, int quantidade);
+        Task<List<object>> ListarEstoqueAsync();
     }
 }
