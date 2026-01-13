@@ -58,6 +58,33 @@ namespace Gestão_Epi.Controllers
 
         }
 
+        [HttpPut("atualizar-epi/{id}")]
+        public async Task<IActionResult> Atualizar_Epi(int id, [FromBody]EpiRequest request)
+        {
+            var epi = await _bancoGE.epi.FindAsync(id);
+
+            if(epi == null)
+            {
+                return NotFound("EPI não encontrado.");
+            }
+
+            if(string.IsNullOrEmpty(request.nome) || !Epi.ChecarTamanhoCa(request.ca) || 
+                string.IsNullOrEmpty(request.tamanho) || string.IsNullOrEmpty(request.descricao) || 
+                request.validade == default(DateOnly))
+            {
+                return BadRequest("Dados inválidos. Verifique os campos obrigatórios.");
+            }
+
+            epi.nome = request.nome;
+            epi.ca = request.ca;
+            epi.tamanho = request.tamanho;
+            epi.validade = request.validade;
+            epi.descricao = request.descricao;
+
+            await _bancoGE.SaveChangesAsync();
+            return Ok("EPI atualizado com sucesso.");
+        }
+
         [HttpDelete("deletar-epi/{id}")]
         public async Task<IActionResult> Deletar_Epi(int id)
         {
