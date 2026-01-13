@@ -75,7 +75,7 @@ public partial class AppDbContext : DbContext
 
             entity.HasOne(d => d.epi).WithOne(p => p.estoque)
                 .HasForeignKey<Estoque>(d => d.epi_id)
-                .OnDelete(DeleteBehavior.ClientSetNull)
+                .OnDelete(DeleteBehavior.Cascade)
                 .HasConstraintName("estoque_ibfk_1");
         });
 
