@@ -20,7 +20,7 @@ namespace Gestão_Epi.Controllers
         [HttpGet("listar-epis")]
         public async Task<IActionResult> Listar_Epis()
         {
-            var epis = await _bancoGE.epi.ToListAsync();
+            var epis = await _bancoGE.epi.Include(e =>e.estoque).ToListAsync();
             return Ok(epis);
         }
 
