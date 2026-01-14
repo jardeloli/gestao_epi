@@ -15,6 +15,8 @@ public partial class Retirada_devolucao
 
     public int epi_id { get; set; }
 
+    public int quantidade { get; set; }
+
     public DateTime data_retirada { get; set; }
 
     public DateTime? data_devolucao { get; set; }
