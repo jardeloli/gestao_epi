@@ -9,9 +9,9 @@ public partial class Retirada_devolucao
 
     public int usuario_id { get; set; }
 
-    public int colaborador_id { get; set; }
+    public int? colaborador_id { get; set; }
 
-    public int visitante_id { get; set; }
+    public int? visitante_id { get; set; }
 
     public int epi_id { get; set; }
 
@@ -23,7 +23,7 @@ public partial class Retirada_devolucao
 
     public string? justificativa_devolucao { get; set; }
 
-    public virtual Colaborador colaborador { get; set; } = null!;
+    public virtual Colaborador? colaborador { get; set; } = null!;
 
     public virtual Epi epi { get; set; } = null!;
 
@@ -31,5 +31,5 @@ public partial class Retirada_devolucao
 
     public virtual Usuario usuario { get; set; } = null!;
 
-    public virtual Visitante visitante { get; set; } = null!;
+    public virtual Visitante? visitante { get; set; } = null!;
 }
