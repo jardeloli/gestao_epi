@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Gestão_Epi.Entities;
 
@@ -11,5 +12,5 @@ public partial class Estoque
 
     public int quantidade { get; set; }
 
-    public virtual Epi epi { get; set; } = null!;
+    [JsonIgnore]public virtual Epi epi { get; set; } = null!;
 }
