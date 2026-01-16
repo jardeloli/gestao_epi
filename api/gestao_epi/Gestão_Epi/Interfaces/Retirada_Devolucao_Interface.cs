@@ -14,6 +14,7 @@
         Task RegistrarDevolucaoAsync(
             int usuario_id,
             int retirada_devolucao_id,
+            int quantidade,
             string? justificativa_devolucao
             );
 
