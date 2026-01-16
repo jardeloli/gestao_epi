@@ -39,5 +39,20 @@ namespace Gestão_Epi.Controllers
                 justificativa_retirada);
             return Ok("Retirada registrada com sucesso");
         }
+
+        [HttpPost("registrar-devolucao")]
+        public async Task<IActionResult> RegistrarDevolucao(
+            int usuario_id,
+            int retirada_devolucao_id,
+            int quantidade,
+            string? justificativa_devolucao)
+        {
+            await _retiradaDevolucaoService.RegistrarDevolucaoAsync(
+                usuario_id,
+                retirada_devolucao_id,
+                quantidade,
+                justificativa_devolucao);
+            return Ok("Devolução registrada com sucesso");
+        }
     }
 }
