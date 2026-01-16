@@ -14,6 +14,12 @@ namespace Gestão_Epi.Controllers
         {
             _retiradaDevolucaoService = retiradaDevolucaoService;
         }
+        [HttpGet("listar-retirada_devolucao")]
+        public async Task<IActionResult> ListarRetiradaDevolucao()
+        {
+            var resultados = await _retiradaDevolucaoService.ListarAsync();
+            return Ok(resultados);
+        }
 
         [HttpPost("registrar-retirada")]
         public async Task<IActionResult> RegistrarRetirada(
