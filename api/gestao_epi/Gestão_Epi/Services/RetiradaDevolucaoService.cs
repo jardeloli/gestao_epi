@@ -14,6 +14,60 @@ namespace Gestão_Epi.Services
             _bancoGE = bancoGE;
         }
 
+        
+        public async Task<IEnumerable<object>> ListarAsync()
+        {
+            var registros = await _bancoGE.retirada_devolucao
+                .Include(rd => rd.usuario)
+                .Include(rd => rd.colaborador)
+                .Include(rd => rd.visitante)
+                .Include(rd => rd.epi)
+                .Select(rd => new
+                {
+                    rd.id,
+                    Usuario = rd.usuario.nome,
+                    Colaborador = rd.colaborador != null ? rd.colaborador.nome : null,
+                    Visitante = rd.visitante != null ? rd.visitante.nome : null,
+                    Epi = rd.epi.nome,
+                    rd.quantidade,
+                    rd.data_retirada,
+                    rd.data_devolucao,
+                    rd.justificativa_retirada,
+                    rd.justificativa_devolucao
+                })
+                .ToListAsync();
+            return registros.Cast<object>();
+        }
+
+        public async Task<object> BuscarPorIdAsync(int id)
+        {
+            var registro = await _bancoGE.retirada_devolucao.FirstOrDefaultAsync(rd => rd.id == id);
+
+            if (registro == null)
+            {
+                throw new InvalidOperationException("Registro de retirada/devolução não encontrado");
+            }
+
+            var retirada_devolucao = await _bancoGE.retirada_devolucao
+                .Include(registro => registro.id == id)
+                .Select(rd => new
+                {
+                    rd.id,
+                    Usuario = rd.usuario.nome,
+                    Colaborador = rd.colaborador != null ? rd.colaborador.nome : null,
+                    Visitante = rd.visitante != null ? rd.visitante.nome : null,
+                    Epi = rd.epi.nome,
+                    rd.quantidade,
+                    rd.data_retirada,
+                    rd.data_devolucao,
+                    rd.justificativa_retirada,
+                    rd.justificativa_devolucao
+                })
+                .ToListAsync();
+
+            return retirada_devolucao.Cast<object>();
+        }
+      
         public async Task RegistrarRetiradaAsync(int usuario_id, int? colaborador_id, int? visitante_id, int epi_id, int quantidade, string? justificativa_retirada)
         {
             if(quantidade <= 0)
@@ -63,7 +117,7 @@ namespace Gestão_Epi.Services
                 throw new InvalidOperationException("Visitante não encontrado");
             }
 
-            var retiradaDevolucao = new Retirada_devolucao
+            var registros = new Retirada_devolucao
             {
                 usuario = usuario,
                 colaborador = colaborador,
@@ -74,9 +128,39 @@ namespace Gestão_Epi.Services
                 justificativa_retirada = justificativa_retirada
             };
 
-            _bancoGE.retirada_devolucao.Add(retiradaDevolucao);
+            _bancoGE.retirada_devolucao.Add(registros);
             await _bancoGE.SaveChangesAsync();
         }
 
+        public async Task RegistrarDevolucaoAsync(int usuario_id, int retirada_devolucao_id, int quantidade, string? justificativa_devolucao)
+        {
+            var registros = await _bancoGE.retirada_devolucao.FindAsync(retirada_devolucao_id);
+            if (registros == null)
+            {
+                throw new InvalidOperationException("Registro de retirada/devolução não encontrado");
+            }
+            if (registros.data_devolucao != null)
+            {
+                throw new InvalidOperationException("Este item já foi devolvido");
+            }
+            var estoque = await _bancoGE.estoque.FirstOrDefaultAsync(e => e.epi_id == registros.epi_id);
+            if (estoque == null)
+            {
+                throw new InvalidOperationException("EPI não encontrado no estoque");
+            }
+
+            var visitante = await _bancoGE.visitante.FindAsync(registros.visitante_id);
+            if (visitante != null)
+            {
+                estoque.quantidade += quantidade;
+                registros.data_devolucao = DateTime.Now;
+                registros.justificativa_devolucao = justificativa_devolucao;
+                await _bancoGE.SaveChangesAsync();
+            }
+            
+            registros.data_devolucao = DateTime.Now;
+            registros.justificativa_devolucao = justificativa_devolucao;
+            await _bancoGE.SaveChangesAsync();
+        }
     }
 }
