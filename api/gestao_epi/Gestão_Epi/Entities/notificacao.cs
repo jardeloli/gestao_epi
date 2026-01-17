@@ -19,6 +19,8 @@ public partial class Notificacao
 
     public string status { get; set; } = null!;
 
+    public DateTime? data_devolucao { get; set; }
+
     public virtual Colaborador? colaborador { get; set; }
 
     public virtual Retirada_devolucao retirada { get; set; } = null!;
