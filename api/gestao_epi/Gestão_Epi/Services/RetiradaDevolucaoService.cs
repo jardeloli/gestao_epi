@@ -8,10 +8,12 @@ namespace Gestão_Epi.Services
     public class RetiradaDevolucaoService : IRetiradaDevolucaoService
     {
         private readonly AppDbContext _bancoGE;
+        private readonly INotificacaoService _notificacaoService;
 
-        public RetiradaDevolucaoService(AppDbContext bancoGE)
+        public RetiradaDevolucaoService(AppDbContext bancoGE, INotificacaoService notificacaoService)
         {
             _bancoGE = bancoGE;
+            _notificacaoService = notificacaoService;
         }
 
         
@@ -130,6 +132,18 @@ namespace Gestão_Epi.Services
 
             _bancoGE.retirada_devolucao.Add(registros);
             await _bancoGE.SaveChangesAsync();
+
+            if (registros.visitante != null)
+            {
+                var dataLimite = DateTime.Now.AddDays(1);
+
+                await _notificacaoService.RegistrarNotificacaoAsync(
+                    registros.visitante.id, 
+                    registros.id,
+                    dataLimite,
+                    "Pendente");
+            }
+            
         }
 
         public async Task RegistrarDevolucaoAsync(int usuario_id, int retirada_devolucao_id, int quantidade, string? justificativa_devolucao)
