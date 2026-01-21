@@ -28,29 +28,30 @@ namespace Gestão_Epi.Controllers
         [HttpPost("cadastrar-epi")]
         public async Task<IActionResult> Cadastrar_Epi([FromBody]EpiRequest request) 
         {
-            var epi_existente = await _bancoGE.epi.FirstOrDefaultAsync(e => e.nome == request.nome);
+            var epi_existente = await _bancoGE.epi.FirstOrDefaultAsync(e => e.nome == request.nome.ToLower());
                 
             if(epi_existente != null)
             {
                 return Conflict("EPI já cadastrado.");
             };
 
-            if(string.IsNullOrWhiteSpace(request.nome) || !Epi.ChecarTamanhoCa(request.ca) || 
-                string.IsNullOrWhiteSpace(request.tamanho) || string.IsNullOrWhiteSpace(request.descricao) || 
-                request.validade == default(DateOnly) || string.IsNullOrWhiteSpace(request.cor)|| string.IsNullOrWhiteSpace(request.fabricante))
+            
+            if(string.IsNullOrWhiteSpace(request.nome.ToLower()) || !Epi.ChecarTamanhoCa(request.ca) || 
+                string.IsNullOrWhiteSpace(request.tamanho) || string.IsNullOrWhiteSpace(request.descricao.ToLower()) || 
+                request.validade == default(DateOnly) || string.IsNullOrWhiteSpace(request.cor.ToLower())|| string.IsNullOrWhiteSpace(request.fabricante.ToLower()))
             {
                 return BadRequest("Dados inválidos. Verifique os campos obrigatórios.");
             }
 
             var epi_novo = new Epi
             {
-                nome = request.nome,
+                nome = request.nome.ToLower(),
                 ca = request.ca,
-                tamanho = request.tamanho,
+                tamanho = request.tamanho.ToLower(),
                 validade = request.validade,
-                descricao = request.descricao,
-                cor = request.cor,
-                fabricante = request.fabricante
+                descricao = request.descricao.ToLower(),
+                cor = request.cor.ToLower(),
+                fabricante = request.fabricante.ToLower()
             };
 
             var estoque_novo = new Estoque
