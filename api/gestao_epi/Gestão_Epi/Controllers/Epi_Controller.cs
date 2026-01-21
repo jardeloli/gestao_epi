@@ -37,7 +37,7 @@ namespace Gestão_Epi.Controllers
 
             
             if(string.IsNullOrWhiteSpace(request.nome.ToLower()) || !Epi.ChecarTamanhoCa(request.ca) || 
-                string.IsNullOrWhiteSpace(request.tamanho) || string.IsNullOrWhiteSpace(request.descricao.ToLower()) || 
+                string.IsNullOrWhiteSpace(request.tamanho.ToLower()) || string.IsNullOrWhiteSpace(request.descricao.ToLower()) || 
                 request.validade == default(DateOnly) || string.IsNullOrWhiteSpace(request.cor.ToLower())|| string.IsNullOrWhiteSpace(request.fabricante.ToLower()))
             {
                 return BadRequest("Dados inválidos. Verifique os campos obrigatórios.");
@@ -79,20 +79,20 @@ namespace Gestão_Epi.Controllers
                 return NotFound("EPI não encontrado.");
             }
 
-            if(string.IsNullOrWhiteSpace(request.nome) || !Epi.ChecarTamanhoCa(request.ca) || 
-                string.IsNullOrWhiteSpace(request.tamanho) || string.IsNullOrWhiteSpace(request.descricao) || 
-                request.validade == default(DateOnly) || string.IsNullOrWhiteSpace(request.cor)|| string.IsNullOrWhiteSpace(request.fabricante))
+            if(string.IsNullOrWhiteSpace(request.nome.ToLower()) || !Epi.ChecarTamanhoCa(request.ca) || 
+                string.IsNullOrWhiteSpace(request.tamanho.ToLower()) || string.IsNullOrWhiteSpace(request.descricao.ToLower()) || 
+                request.validade == default(DateOnly) || string.IsNullOrWhiteSpace(request.cor.ToLower())|| string.IsNullOrWhiteSpace(request.fabricante.ToLower()))
             {
                 return BadRequest("Dados inválidos. Verifique os campos obrigatórios.");
             }
 
-            epi.nome = request.nome;
+            epi.nome = request.nome.ToLower();
             epi.ca = request.ca;
-            epi.tamanho = request.tamanho;
+            epi.tamanho = request.tamanho.ToLower();
             epi.validade = request.validade;
-            epi.descricao = request.descricao;
-            epi.cor = request.cor;
-            epi.fabricante = request.fabricante;
+            epi.descricao = request.descricao.ToLower();
+            epi.cor = request.cor.ToLower();
+            epi.fabricante = request.fabricante.ToLower();
 
             await _bancoGE.SaveChangesAsync();
             return Ok("EPI atualizado com sucesso.");
