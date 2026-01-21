@@ -72,10 +72,10 @@ namespace Gestão_Epi.Controllers
             return Ok(response);
         }
 
-        [HttpPut("atualizar-usuario")]
-        public async Task<IActionResult> Atualizar_Usuario([FromBody] UsuarioRequest request)
+        [HttpPut("atualizar-usuario/{id}")]
+        public async Task<IActionResult> Atualizar_Usuario(int id, [FromBody] UsuarioRequest request)
         {
-            var usuario = await _bancoGE.usuario.FirstOrDefaultAsync(u => u.id == request.id);
+            var usuario = await _bancoGE.usuario.FirstOrDefaultAsync(u => u.id == id);
             if (usuario == null)
             {
                 return NotFound("Usuário não encontrado.");

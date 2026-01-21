@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Gestão_Epi.Entities;
 
@@ -23,7 +24,7 @@ public partial class Notificacao
 
     public virtual Colaborador? colaborador { get; set; }
 
-    public virtual Retirada_devolucao retirada { get; set; } = null!;
+    [JsonIgnore]public virtual Retirada_devolucao retirada { get; set; } = null!;
 
     public virtual Visitante? visitante { get; set; }
 }
