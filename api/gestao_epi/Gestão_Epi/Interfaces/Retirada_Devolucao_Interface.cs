@@ -1,6 +1,6 @@
 ﻿namespace Gestão_Epi.Interfaces
 {
-    public interface IRetiradaDevolucaoService
+    public interface IRetiradaDevolucaoService 
     {
         Task RegistrarRetiradaAsync(
             int usuario_id,
