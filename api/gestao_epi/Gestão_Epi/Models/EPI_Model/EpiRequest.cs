@@ -9,6 +9,8 @@
         public DateOnly? validade { get; set; }
 
         public string descricao { get; set; } 
+        public string? cor { get; set; }
+        public string fabricante { get; set; }
 
     }
 }
