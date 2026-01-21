@@ -4,6 +4,7 @@ using Gestão_Epi.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.ConstrainedExecution;
 
 namespace Gestão_Epi.Controllers
 {
@@ -34,9 +35,9 @@ namespace Gestão_Epi.Controllers
                 return Conflict("EPI já cadastrado.");
             };
 
-            if(string.IsNullOrEmpty(request.nome) || !Epi.ChecarTamanhoCa(request.ca) || 
-                string.IsNullOrEmpty(request.tamanho) || string.IsNullOrEmpty(request.descricao) || 
-                request.validade == default(DateOnly))
+            if(string.IsNullOrWhiteSpace(request.nome) || !Epi.ChecarTamanhoCa(request.ca) || 
+                string.IsNullOrWhiteSpace(request.tamanho) || string.IsNullOrWhiteSpace(request.descricao) || 
+                request.validade == default(DateOnly) || string.IsNullOrWhiteSpace(request.cor)|| string.IsNullOrWhiteSpace(request.fabricante))
             {
                 return BadRequest("Dados inválidos. Verifique os campos obrigatórios.");
             }
@@ -47,7 +48,9 @@ namespace Gestão_Epi.Controllers
                 ca = request.ca,
                 tamanho = request.tamanho,
                 validade = request.validade,
-                descricao = request.descricao
+                descricao = request.descricao,
+                cor = request.cor,
+                fabricante = request.fabricante
             };
 
             var estoque_novo = new Estoque
@@ -75,9 +78,9 @@ namespace Gestão_Epi.Controllers
                 return NotFound("EPI não encontrado.");
             }
 
-            if(string.IsNullOrEmpty(request.nome) || !Epi.ChecarTamanhoCa(request.ca) || 
-                string.IsNullOrEmpty(request.tamanho) || string.IsNullOrEmpty(request.descricao) || 
-                request.validade == default(DateOnly))
+            if(string.IsNullOrWhiteSpace(request.nome) || !Epi.ChecarTamanhoCa(request.ca) || 
+                string.IsNullOrWhiteSpace(request.tamanho) || string.IsNullOrWhiteSpace(request.descricao) || 
+                request.validade == default(DateOnly) || string.IsNullOrWhiteSpace(request.cor)|| string.IsNullOrWhiteSpace(request.fabricante))
             {
                 return BadRequest("Dados inválidos. Verifique os campos obrigatórios.");
             }
@@ -87,6 +90,8 @@ namespace Gestão_Epi.Controllers
             epi.tamanho = request.tamanho;
             epi.validade = request.validade;
             epi.descricao = request.descricao;
+            epi.cor = request.cor;
+            epi.fabricante = request.fabricante;
 
             await _bancoGE.SaveChangesAsync();
             return Ok("EPI atualizado com sucesso.");
