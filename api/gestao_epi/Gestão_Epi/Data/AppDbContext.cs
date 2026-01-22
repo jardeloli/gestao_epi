@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Gestão_Epi.Entities;
+using Gestão_Epi.Security;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore.MySql.Scaffolding.Internal;
 
@@ -145,6 +146,40 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.codigo).HasMaxLength(50);
             entity.Property(e => e.descricao).HasMaxLength(100);
         });
+
+        modelBuilder.Entity<Permissao>().HasData(
+             new Permissao { id = 1, codigo = Permissoes.EPI_CADASTRAR, descricao = "PERMITE REALIZAR CADASTRO DE EPI" },
+             new Permissao { id = 2, codigo = Permissoes.EPI_EDITAR, descricao = "PERMITE REALIZAR EDIÇÃO DE EPI" },
+             new Permissao { id = 3, codigo = Permissoes.EPI_DELETAR, descricao = "PERMITE DELETAR EPI" },
+             new Permissao { id = 4, codigo = Permissoes.EPI_LISTAR, descricao = "PERMITE LISTAR EPIS" },
+
+             new Permissao { id = 5, codigo = Permissoes.USUARIO_CADASTRAR, descricao = "PERMITE REALIZAR CADASTRO DE USUÁRIO" },
+             new Permissao { id = 6, codigo = Permissoes.USUARIO_EDITAR, descricao = "PERMITE REALIZAR EDIÇÃO DE USUÁRIO" },
+             new Permissao { id = 7, codigo = Permissoes.USUARIO_DELETAR, descricao = "PERMITE DELETAR USUÁRIO" },
+             new Permissao { id = 8, codigo = Permissoes.USUARIO_LISTAR, descricao = "PERMITE LISTAR USUÁRIO" },
+
+             new Permissao { id = 9, codigo = Permissoes.PERFIL_CADASTRAR, descricao = "PERMITE REALIZAR CADASTRO DE PERFIL" },
+             new Permissao { id = 10, codigo = Permissoes.PERFIL_EDITAR, descricao = "PERMITE REALIZAR EDIÇÃO DE PERFIL" },
+             new Permissao { id = 11, codigo = Permissoes.PERFIL_DELETAR, descricao = "PERMITE DELETAR PERFIL" },
+             new Permissao { id = 12, codigo = Permissoes.PERFIL_LISTAR, descricao = "PERMITE LISTAR PERFIS" },
+
+             new Permissao { id = 13, codigo = Permissoes.RETIRADA_REGISTRAR, descricao = "PERMITE REGISTRAR SAÍDA EPI" },
+             new Permissao { id = 14, codigo = Permissoes.DEVOLUCAO_REGISTRAR, descricao = "PERMITE REGISTRAR ENTRADA EPI" },
+
+             new Permissao { id = 15, codigo = Permissoes.ESTOQUE_LISTAR, descricao = "PERMITE LISTAR ESTOQUE" },
+             new Permissao { id = 16, codigo = Permissoes.ESTOQUE_ENTRADA , descricao = "PERMITE AJUSTAR ESTOQUE(ENTRADA)" },
+             new Permissao { id = 17, codigo = Permissoes.ESTOQUE_SAIDA , descricao = "PERMITE AJUSTAR ESTOQUE(SAÍDA)" },
+
+             new Permissao { id = 18, codigo = Permissoes.VISITANTE_CADASTRAR, descricao = "PERMITE REALIZAR CADASTRO DE VISITANTE" },
+             new Permissao { id = 19, codigo = Permissoes.VISITANTE_EDITAR, descricao = "PERMITE REALIZAR EDIÇÃO VISITANTE" },
+             new Permissao { id = 20, codigo = Permissoes.VISITANTE_DELETAR, descricao = "PERMITE DELETAR VISITANTE" },
+             new Permissao { id = 21, codigo = Permissoes.VISITANTE_LISTAR, descricao = "PERMITE LISTAR VISITANTES" },
+
+             new Permissao { id = 22, codigo = Permissoes.COLABORADOR_CADASTRAR, descricao = "PERMITE REALIZAR CADASTRO DE COLABORADOR" },
+             new Permissao { id = 23, codigo = Permissoes.COLABORADOR_EDITAR, descricao = "PERMITE REALIZAR EDIÇÃO DE COLABORADOR" },
+             new Permissao { id = 24, codigo = Permissoes.COLABORADOR_DELETAR, descricao = "PERMITE DELETAR COLABORADOR" },
+             new Permissao { id = 25, codigo = Permissoes.COLABORADOR_LISTAR, descricao = "PERMITE LISTAR COLABORADORES" }
+        );
 
         modelBuilder.Entity<Retirada_devolucao>(entity =>
         {
