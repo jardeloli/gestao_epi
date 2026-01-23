@@ -28,5 +28,16 @@ namespace Gestão_Epi.Controllers
 
             return Ok(permissoes);
         }
+
+        [HttpGet("buscar_id/{id}")]
+        public async Task<IActionResult> Buscar_Por_Id(int id)
+        {
+            var permissao = await _bancoGE.permissao.FindAsync(id);
+            if (permissao == null)
+            {
+                return NotFound("Permissão não encontrada.");
+            }
+            return Ok(permissao);
+        }
     }
 }
