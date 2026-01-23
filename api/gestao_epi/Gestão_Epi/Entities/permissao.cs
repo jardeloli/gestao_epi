@@ -12,4 +12,6 @@ public partial class Permissao
     public string? descricao { get; set; }
 
     public virtual ICollection<Perfil> perfil { get; set; } = new List<Perfil>();
+
+    public virtual ICollection<Perfil_Permissao> perfil_Permissao { get; set; } = new List<Perfil_Permissao>();
 }
