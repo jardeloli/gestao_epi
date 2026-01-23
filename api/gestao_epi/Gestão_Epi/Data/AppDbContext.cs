@@ -181,6 +181,23 @@ public partial class AppDbContext : DbContext
              new Permissao { id = 25, codigo = Permissoes.COLABORADOR_LISTAR, descricao = "PERMITE LISTAR COLABORADORES" }
         );
 
+        modelBuilder.Entity<Perfil_Permissao>(entity =>
+        {
+            entity.HasKey(pp => new { pp.perfil_id, pp.permissao_id }).HasName("PRIMARY");
+
+            entity.HasIndex(pp => pp.permissao_id, "permissao_id");
+
+            entity.HasOne(pp => pp.perfil).WithMany(p => p.perfil_Permissao)
+                .HasForeignKey(pp => pp.perfil_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("perfil_permissao_ibfk_1");
+
+            entity.HasOne(pp => pp.permissao).WithMany(pp => pp.perfil_Permissao)
+                .HasForeignKey(pp => pp.permissao_id)
+                .OnDelete(DeleteBehavior.ClientSetNull)
+                .HasConstraintName("perfil_permissao_ibfk_2");
+        });
+        
         modelBuilder.Entity<Retirada_devolucao>(entity =>
         {
             entity.HasKey(e => e.id).HasName("PRIMARY");
