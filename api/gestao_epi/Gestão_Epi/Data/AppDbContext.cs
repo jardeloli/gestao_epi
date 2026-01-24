@@ -30,6 +30,7 @@ public partial class AppDbContext : DbContext
 
     public virtual DbSet<Perfil> perfil { get; set; } = null!;
 
+    public virtual DbSet<Perfil_Permissao> perfil_permissao { get; set; }
     public virtual DbSet<Permissao> permissao { get; set; }
 
     public virtual DbSet<Retirada_devolucao> retirada_devolucao { get; set; }
@@ -117,24 +118,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.descricao).HasMaxLength(50);
             entity.Property(e => e.nome).HasMaxLength(50);
 
-            entity.HasMany(d => d.permissao).WithMany(p => p.perfil)
-                .UsingEntity<Dictionary<string, object>>(
-                    "perfil_permissao",
-                    r => r.HasOne<Permissao>().WithMany()
-                        .HasForeignKey("permissao_id")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("perfil_permissao_ibfk_2"),
-                    l => l.HasOne<Perfil>().WithMany()
-                        .HasForeignKey("perfil_id")
-                        .OnDelete(DeleteBehavior.ClientSetNull)
-                        .HasConstraintName("perfil_permissao_ibfk_1"),
-                    j =>
-                    {
-                        j.HasKey("perfil_id", "permissao_id")
-                            .HasName("PRIMARY")
-                            .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-                        j.HasIndex(new[] { "permissao_id" }, "permissao_id");
-                    });
+          
         });
 
         modelBuilder.Entity<Permissao>(entity =>
