@@ -172,6 +172,22 @@ namespace Gestão_Epi.Migrations
                     b.ToTable("perfil");
                 });
 
+            modelBuilder.Entity("Gestão_Epi.Entities.Perfil_Permissao", b =>
+                {
+                    b.Property<int>("perfil_id")
+                        .HasColumnType("int");
+
+                    b.Property<int>("permissao_id")
+                        .HasColumnType("int");
+
+                    b.HasKey("perfil_id", "permissao_id")
+                        .HasName("PRIMARY");
+
+                    b.HasIndex(new[] { "permissao_id" }, "permissao_id");
+
+                    b.ToTable("perfil_permissao");
+                });
+
             modelBuilder.Entity("Gestão_Epi.Entities.Permissao", b =>
                 {
                     b.Property<int>("id")
@@ -457,23 +473,6 @@ namespace Gestão_Epi.Migrations
                     b.ToTable("visitante");
                 });
 
-            modelBuilder.Entity("perfil_permissao", b =>
-                {
-                    b.Property<int>("perfil_id")
-                        .HasColumnType("int");
-
-                    b.Property<int>("permissao_id")
-                        .HasColumnType("int");
-
-                    b.HasKey("perfil_id", "permissao_id")
-                        .HasName("PRIMARY")
-                        .HasAnnotation("MySql:IndexPrefixLength", new[] { 0, 0 });
-
-                    b.HasIndex(new[] { "permissao_id" }, "permissao_id");
-
-                    b.ToTable("perfil_permissao");
-                });
-
             modelBuilder.Entity("Gestão_Epi.Entities.Estoque", b =>
                 {
                     b.HasOne("Gestão_Epi.Entities.Epi", "epi")
@@ -509,6 +508,25 @@ namespace Gestão_Epi.Migrations
                     b.Navigation("retirada");
 
                     b.Navigation("visitante");
+                });
+
+            modelBuilder.Entity("Gestão_Epi.Entities.Perfil_Permissao", b =>
+                {
+                    b.HasOne("Gestão_Epi.Entities.Perfil", "perfil")
+                        .WithMany("perfil_Permissao")
+                        .HasForeignKey("perfil_id")
+                        .IsRequired()
+                        .HasConstraintName("perfil_permissao_ibfk_1");
+
+                    b.HasOne("Gestão_Epi.Entities.Permissao", "permissao")
+                        .WithMany("perfil_Permissao")
+                        .HasForeignKey("permissao_id")
+                        .IsRequired()
+                        .HasConstraintName("perfil_permissao_ibfk_2");
+
+                    b.Navigation("perfil");
+
+                    b.Navigation("permissao");
                 });
 
             modelBuilder.Entity("Gestão_Epi.Entities.Retirada_devolucao", b =>
@@ -555,21 +573,6 @@ namespace Gestão_Epi.Migrations
                     b.Navigation("perfil");
                 });
 
-            modelBuilder.Entity("perfil_permissao", b =>
-                {
-                    b.HasOne("Gestão_Epi.Entities.Perfil", null)
-                        .WithMany()
-                        .HasForeignKey("perfil_id")
-                        .IsRequired()
-                        .HasConstraintName("perfil_permissao_ibfk_1");
-
-                    b.HasOne("Gestão_Epi.Entities.Permissao", null)
-                        .WithMany()
-                        .HasForeignKey("permissao_id")
-                        .IsRequired()
-                        .HasConstraintName("perfil_permissao_ibfk_2");
-                });
-
             modelBuilder.Entity("Gestão_Epi.Entities.Colaborador", b =>
                 {
                     b.Navigation("notificacao");
@@ -586,7 +589,14 @@ namespace Gestão_Epi.Migrations
 
             modelBuilder.Entity("Gestão_Epi.Entities.Perfil", b =>
                 {
+                    b.Navigation("perfil_Permissao");
+
                     b.Navigation("usuario");
+                });
+
+            modelBuilder.Entity("Gestão_Epi.Entities.Permissao", b =>
+                {
+                    b.Navigation("perfil_Permissao");
                 });
 
             modelBuilder.Entity("Gestão_Epi.Entities.Retirada_devolucao", b =>
