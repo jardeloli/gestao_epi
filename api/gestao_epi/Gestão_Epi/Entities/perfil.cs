@@ -13,7 +13,5 @@ public partial class Perfil
 
     public virtual ICollection<Usuario> usuario { get; set; } = new List<Usuario>();
 
-    public virtual ICollection<Permissao> permissao { get; set; } = new List<Permissao>();
-
     public virtual ICollection<Perfil_Permissao> perfil_Permissao { get; set; } = new List<Perfil_Permissao>();
 }
