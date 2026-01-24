@@ -76,6 +76,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IEstoqueService, EstoqueService>();
 builder.Services.AddScoped<IRetiradaDevolucaoService, RetiradaDevolucaoService>();
 builder.Services.AddScoped<INotificacaoService, NotificacaoService>();
+builder.Services.AddScoped<IPerfilPermissaoService, PerfilPermissaoService>();
 var jwtSettings = builder.Configuration.GetSection("Jwt");
 
 Console.WriteLine("JWT KEY (Program.cs): " + jwtSettings["Key"]);
