@@ -12,5 +12,7 @@
         public string? cor { get; set; }
         public string fabricante { get; set; }
 
+        public IFormFile? imagem { get; set; }
+
     }
 }
