@@ -66,6 +66,9 @@ namespace Gestão_Epi.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("imagemUrl")
+                        .HasColumnType("longtext");
+
                     b.Property<string>("nome")
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)");
