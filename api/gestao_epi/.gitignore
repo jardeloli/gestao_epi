@@ -367,6 +367,9 @@ FodyWeavers.xsd
 appsettings.json
 appsettings.Development.json
 
+# Uploads de imagens (não versionar)
+wwwroot/imagens/
+wwwroot/imagens_epi/
 
 # .NET
 bin/
