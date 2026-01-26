@@ -22,11 +22,15 @@ namespace Gestão_Epi.Controllers
         public async Task<IActionResult> Listar_Epis()
         {
             var epis = await _bancoGE.epi.Include(e =>e.estoque).ToListAsync();
+            if (epis == null || epis.Count == 0)
+            {
+                return NotFound("Nenhum EPI cadastrado.");
+            }
             return Ok(epis);
         }
 
         [HttpPost("cadastrar-epi")]
-        public async Task<IActionResult> Cadastrar_Epi([FromBody]EpiRequest request) 
+        public async Task<IActionResult> Cadastrar_Epi([FromForm]EpiRequest request) 
         {
             var epi_existente = await _bancoGE.epi.FirstOrDefaultAsync(e => e.nome == request.nome.ToLower());
                 
@@ -43,6 +47,34 @@ namespace Gestão_Epi.Controllers
                 return BadRequest("Dados inválidos. Verifique os campos obrigatórios.");
             }
 
+            string? imagemUrl = null;
+
+            if(request.imagem != null)
+            {
+             
+                var extensoes_permitidas = new [] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extensao_arquivo = Path.GetExtension(request.imagem.FileName).ToLower();
+
+                if(!extensoes_permitidas.Contains(extensao_arquivo))
+                {
+                    return BadRequest("Formato de imagem inválido. Formatos permitidos: .jpg, .jpeg, .png, .gif");
+                }
+
+                var pasta = Path.Combine("wwwroot", "imagens_epi");
+                Directory.CreateDirectory(pasta);
+
+                var nome_arquivo = $"{Guid.NewGuid()}{extensao_arquivo}";
+                var caminho_completo = Path.Combine(pasta, nome_arquivo);
+
+                using(var stream = new FileStream(caminho_completo, FileMode.Create))
+                {
+                    await request.imagem.CopyToAsync(stream);
+                }
+
+                imagemUrl = $"/imagens_epi/{nome_arquivo}";
+
+            }
+
             var epi_novo = new Epi
             {
                 nome = request.nome.ToLower(),
@@ -51,7 +83,8 @@ namespace Gestão_Epi.Controllers
                 validade = request.validade,
                 descricao = request.descricao.ToLower(),
                 cor = request.cor.ToLower(),
-                fabricante = request.fabricante.ToLower()
+                fabricante = request.fabricante.ToLower(),
+                imagemUrl = imagemUrl
             };
 
             var estoque_novo = new Estoque
@@ -70,7 +103,7 @@ namespace Gestão_Epi.Controllers
         }
 
         [HttpPut("atualizar-epi/{id}")]
-        public async Task<IActionResult> Atualizar_Epi(int id, [FromBody]EpiRequest request)
+        public async Task<IActionResult> Atualizar_Epi(int id, [FromForm]EpiRequest request)
         {
             var epi = await _bancoGE.epi.FindAsync(id);
 
@@ -93,6 +126,7 @@ namespace Gestão_Epi.Controllers
             epi.descricao = request.descricao.ToLower();
             epi.cor = request.cor.ToLower();
             epi.fabricante = request.fabricante.ToLower();
+            epi.imagemUrl = epi.imagemUrl;
 
             await _bancoGE.SaveChangesAsync();
             return Ok("EPI atualizado com sucesso.");
