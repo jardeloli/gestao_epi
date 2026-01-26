@@ -22,10 +22,12 @@ namespace Gestão_Epi.Services
                     e.id,
                     e.quantidade,
                     EpiId = e.epi_id,
+                    ImagemUrl = e.epi.imagemUrl,
                     NomeEpi = e.epi.nome,
                     Tamanho= e.epi.tamanho,
                     Ca = e.epi.ca,
                     Descricao= e.epi.descricao,
+                    Cor = e.epi.cor,
                 })
                 .ToListAsync();
 
