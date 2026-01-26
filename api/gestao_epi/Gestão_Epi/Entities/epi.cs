@@ -22,6 +22,8 @@ public partial class Epi
     public string? cor { get; set; }
 
     public string fabricante { get; set; }
+
+    public string? imagemUrl { get; set; }
     public virtual Estoque? estoque { get; set; }
 
     public virtual ICollection<Retirada_devolucao> retirada_devolucao { get; set; } = new List<Retirada_devolucao>();
