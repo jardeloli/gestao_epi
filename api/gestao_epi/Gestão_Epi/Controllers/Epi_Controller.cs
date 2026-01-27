@@ -52,12 +52,12 @@ namespace Gestão_Epi.Controllers
             if(request.imagem != null)
             {
              
-                var extensoes_permitidas = new [] { ".jpg", ".jpeg", ".png", ".gif" };
+                var extensoes_permitidas = new [] { ".jpg", ".jpeg", ".png" };
                 var extensao_arquivo = Path.GetExtension(request.imagem.FileName).ToLower();
 
                 if(!extensoes_permitidas.Contains(extensao_arquivo))
                 {
-                    return BadRequest("Formato de imagem inválido. Formatos permitidos: .jpg, .jpeg, .png, .gif");
+                    return BadRequest("Formato de imagem inválido. Formatos permitidos: .jpg, .jpeg, .png");
                 }
 
                 var pasta = Path.Combine("wwwroot", "imagens_epi");
