@@ -10,7 +10,7 @@ public partial class Usuario
     public int id { get; set; }
 
     public string? nome { get; set; }
-
+    
     public string? email { get; set; }
 
     public byte[] senhaHash { get; private set; } = null!;
@@ -24,15 +24,22 @@ public partial class Usuario
 
     public void Defsenha(string senha)
     {
-        using var hmac = new System.Security.Cryptography.HMACSHA512();
-        senhaSalt = hmac.Key;
-        senhaHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(senha));
+        using (var hmac = new HMACSHA512())
+        {
+            senhaSalt = hmac.Key;
+            senhaHash = hmac.ComputeHash(System.Text.Encoding.UTF8.GetBytes(senha));
+        } ;
+        
     }
 
     public bool Verifsenha(string senha)
     {
-        using var hmac = new HMACSHA512(senhaSalt);
-        var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(senha));
-        return hash.SequenceEqual(senhaHash);
+        using (var hmac = new HMACSHA512(senhaSalt))
+        {
+            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(senha));
+            return hash.SequenceEqual(senhaHash);
+
+        } ;
+        
     }
 }
