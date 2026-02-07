@@ -16,7 +16,7 @@ namespace Gestão_Epi.Controllers
             _bancoGE = bancoGE;
         }
 
-        [HttpGet]
+        [HttpGet("listar_permissoes")]
         public async Task<IActionResult> Listar_Permissoes()
         {
             var permissoes = await _bancoGE.permissao.ToListAsync();
