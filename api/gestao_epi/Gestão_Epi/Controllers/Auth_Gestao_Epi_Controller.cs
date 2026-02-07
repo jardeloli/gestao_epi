@@ -33,38 +33,48 @@ namespace Gestão_Epi.Controllers
 
         private string GerarToken(Usuario usuario)
         {
-           
-            var claims = new[]
+            //definir claims. Claims são informações sobre o usuário que serão incluídas no token!
+            List<Claim> claims = new List<Claim>()
             {
-                new Claim(ClaimTypes.NameIdentifier, usuario.id.ToString()),
-                new Claim(ClaimTypes.Email, usuario.email!),
-                new Claim(ClaimTypes.Role, usuario.perfil_id.ToString())
+                new Claim("Id", usuario.id.ToString()),
+                new Claim("Username", usuario.nome),
+                new Claim("Email", usuario.email)
             };
 
-            var key = new SymmetricSecurityKey(
-                Encoding.UTF8.GetBytes(_config["Jwt:Key"]!)
-            );
+            var keyString = _config["AppSettings:Token"];
 
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+            if (string.IsNullOrEmpty(keyString))
+            {
+                throw new Exception("A chave de segurança não foi encontrada no appsettings.json.");
+            }
 
+            //gerar a chave de segurança usando a chave definida no appsettings.json
+            var key = new SymmetricSecurityKey(System.Text.Encoding.UTF8.GetBytes(keyString));
+
+            //gerar as credenciais do token usando a chave de segurança e o algoritmo HMAC SHA512 
+            var cred = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            //definir o tempo de expiração do token 
             var token = new JwtSecurityToken(
-                issuer: _config["Jwt:Issuer"],
-                audience: _config["Jwt:Audience"],
                 claims: claims,
-                expires: DateTime.UtcNow.AddHours(1),
-                signingCredentials: creds
-            );
+                expires: DateTime.UtcNow.AddDays(1),
+                signingCredentials: cred
+             );
 
-            return new JwtSecurityTokenHandler().WriteToken(token);
+            //gerar o token e retorná-lo
+            var jwt = new JwtSecurityTokenHandler().WriteToken(token);
+
+            return jwt;
         }
-
-        
 
         [HttpPost("login")]
         public async Task<IActionResult> LoginUsuario([FromBody] LoginRequest request)
         {
 
             var usuario = await _bancoGE.usuario
+                .Include(u => u.perfil)
+                    .ThenInclude(p => p.perfil_Permissao)
+                        .ThenInclude(pp => pp.permissao) 
                 .FirstOrDefaultAsync(u => u.email == request.Email);
 
 
@@ -73,11 +83,12 @@ namespace Gestão_Epi.Controllers
                 return Unauthorized("Email ou senha inválidos.");
             }
            
-
             var token = GerarToken(usuario);
 
+
             return Ok(new 
-            { Token = token,
+            { 
+              Token = token,
               Nome = usuario.nome,
               Perfil_Id = usuario.perfil_id
             });
@@ -95,7 +106,7 @@ namespace Gestão_Epi.Controllers
 
         }
 
-        [Authorize]
+        
         [HttpPatch("atualizar-senha")]
         public async Task<IActionResult> AtualizarSenha([FromBody] Nova_SenhaRequest request)
         {
