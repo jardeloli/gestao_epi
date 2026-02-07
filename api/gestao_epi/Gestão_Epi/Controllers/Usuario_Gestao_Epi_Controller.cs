@@ -20,7 +20,7 @@ namespace Gestão_Epi.Controllers
         {
             _bancoGE = bancoGE;
         }
-
+       
         [HttpGet("listar-usuarios")]
         public async Task<IActionResult> Listar_Usario()
         {
@@ -50,7 +50,12 @@ namespace Gestão_Epi.Controllers
                 return BadRequest("Email já cadastrado.");
 
             }
-            
+
+            if (request.Perfil_Id <= 0)
+            {
+                return BadRequest("Perfil_Id inválido.");
+            }
+
             var usuario = new Usuario
             {
                 nome = request.Nome,
@@ -91,7 +96,7 @@ namespace Gestão_Epi.Controllers
             return Ok($"Usuário {usuario.nome} atualizado com sucesso!");
         }
 
-        [Authorize(Roles = "1")]
+    
         [HttpDelete("deletar-usuario/{id}")]
         public async Task<IActionResult> DeletarUsuario(int id)
         {
