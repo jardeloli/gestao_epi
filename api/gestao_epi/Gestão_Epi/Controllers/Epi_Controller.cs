@@ -1,6 +1,7 @@
 ﻿using Gestão_Epi.Data;
 using Gestão_Epi.Entities;
 using Gestão_Epi.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace Gestão_Epi.Controllers
         {
             _bancoGE = bancoGE;
         }
+       
         [HttpGet("listar-epis")]
         public async Task<IActionResult> Listar_Epis()
         {
@@ -29,6 +31,7 @@ namespace Gestão_Epi.Controllers
             return Ok(epis);
         }
 
+        
         [HttpPost("cadastrar-epi")]
         public async Task<IActionResult> Cadastrar_Epi([FromForm]EpiRequest request) 
         {
