@@ -377,3 +377,6 @@ obj/
 
 # Visual Studio
 .vs/
+
+# pastas locais que não fazem parte do projeto
+**/-multilnst
